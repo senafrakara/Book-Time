@@ -28,6 +28,3 @@ $ python manage.py runserver
 * Split settings in two files. `settings_custom.py` for specific environment settings (localhost, production, etc). `projectname/settings.py` for core settings.
 * Simple logging setup ready for production envs.
 
-## Contributing
-
-I love contributions, so please feel free to fix bugs, improve things, provide documentation. Just send a pull request.
