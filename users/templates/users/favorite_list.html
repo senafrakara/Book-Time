@@ -1,0 +1,50 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="container">
+        <section class="jumbotron text-center bg-white">
+            <div class="container">
+                <h1>Favourites</h1>
+                <p class="lead text-muted">Here you can remove or view the favourites</p>
+            </div>
+        </section>
+        <div>
+            <div class="row justify-content-center">
+                {% for product in new %}
+                    <div class="col-lg-3 product-card favorite-card">
+
+                        <a class="text-dark" href="{% url 'product_detail' product.id %}" title="{{ product.name }}">
+                            <div class="card mb-4 box-shadow favorites-box">
+                                <img class="card-img-top favorite-list-img" src="{{ product.imageURL }}"
+                                     alt="{{ product.name }}">
+                                <div class="card-body favorite-card-body">
+                                    <div class="pname">
+                                        <h2 style="font-size:17px;font-weight:bold">{{ product.name|truncatechars:50 }}</h2>
+                                        <p class="card-text">{{ product.excerpt|truncatechars:50 }}</p>
+                                    </div>
+
+                                    <div class="product-author-publisher">
+                                        <h9 class="product-author" style="font-weight: 400; font-style: italic">
+                                            {{ product.author|truncatechars:30  }}</h9>
+                                        <h9 class="publisher">{{ product.publisher |truncatechars:25 }}</h9>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div id="favourite-section">
+                                            <a href="{% url 'remove_favorites' product.id %}"
+                                               class="btn btn-outline-primary remove-from-favorites">Remove</a>
+                                            <a class="btn btn-outline-success view-product-detail"
+                                               href="{% url 'product_detail' product.id %}">View</a></div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

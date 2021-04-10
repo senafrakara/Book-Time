@@ -1,0 +1,26 @@
+/*.btn {*/
+/*    padding: 0 !important;*/
+/*    font-size: 0.71rem !important;*/
+/*    margin: .275rem !important;*/
+/*}*/
+
+.add-to-cart-detail {
+    font-size: 0.8rem !important;
+    color: black !important;
+}
+
+.product-detail-img {
+    height: 490px !important;
+    object-fit: cover;
+}
+
+.product-detail-price {
+    font-size: 20px;
+}
+
+.add-cart-favorite {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+

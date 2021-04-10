@@ -1,0 +1,45 @@
+{% extends "store/main.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="clearfix">
+                        <div class="section-title">
+                            <h3 class="card-title">Order List</h3>
+                        </div>
+
+                        <table class="table">
+
+                            <thead>
+                            <tr>
+                                <th class="text-left">Name</th>
+                                <th class="text-left">Surname</th>
+                                <th class="text-left">Email</th>
+                                <th class="text-left">Total</th>
+                                <th class="text-left">Date</th>
+
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {% for rs in orders %}
+                                <tr>
+                                    <td class="text-left">{{ rs.customer.name }} </td>
+                                    <td class="text-left">{{ rs.customer.surname }} </td>
+                                    <td class="text-left">{{ rs.customer.email }} </td>
+                                    <td class="text-left">₺ {{ rs.get_cart_total }} </td>
+                                    <td class="text-left">{{ rs.date_ordered }}</td>
+                                    <td class="text-left"><a class="btn btn-outline-primary waves-effect waves-light" href="{% url 'order_detail' rs.id  %}">Detail</a></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

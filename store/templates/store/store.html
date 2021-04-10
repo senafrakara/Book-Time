@@ -1,0 +1,166 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+{#    <div class="row">#}
+{#        <div class="col-md-12">#}
+{#            <div class="banner-1">#}
+{#                <img src="banner-5-editted.jpg">#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{##}
+ <div class="img-slider">
+      <div class="slide active">
+        <img src="static/images/slider.png" alt="">
+      </div>
+      <div class="slide">
+        <img src="static/images/slider.png" alt="">
+      </div>
+      <div class="slide">
+        <img src="static/images/slider4.png" alt="">
+
+      </div>
+      <div class="slide">
+        <img src="static/images/slider3.png" alt="">
+      </div>
+      <div class="slide">
+        <img src="static/images/slider44.png" alt="">
+      </div>
+      <div class="navigation">
+        <div class="btn active"></div>
+        <div class="btn"></div>
+        <div class="btn"></div>
+        <div class="btn"></div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+    var slides = document.querySelectorAll('.slide');
+    var btns = document.querySelectorAll('.btn');
+    let currentSlide = 1;
+
+    // Javascript for image slider manual navigation
+    var manualNav = function(manual){
+      slides.forEach((slide) => {
+        slide.classList.remove('active');
+
+        btns.forEach((btn) => {
+          btn.classList.remove('active');
+        });
+      });
+
+      slides[manual].classList.add('active');
+      btns[manual].classList.add('active');
+    }
+
+    btns.forEach((btn, i) => {
+      btn.addEventListener("click", () => {
+        manualNav(i);
+        currentSlide = i;
+      });
+    });
+
+    // Javascript for image slider autoplay navigation
+    var repeat = function(activeClass){
+      let active = document.getElementsByClassName('active');
+      let i = 1;
+
+      var repeater = () => {
+        setTimeout(function(){
+          [...active].forEach((activeSlide) => {
+            activeSlide.classList.remove('active');
+          });
+
+        slides[i].classList.add('active');
+        btns[i].classList.add('active');
+        i++;
+
+        if(slides.length == i){
+          i = 0;
+        }
+        if(i >= slides.length){
+          return;
+        }
+        repeater();
+      }, 10000);
+      }
+      repeater();
+    }
+    repeat();
+    </script>
+
+ <div class="header-search" style="margin-top:3em;margin-bottom:8em;text-align:center">
+     <form action="{% url 'search' %}" method="GET" class="form-inline d-flex justify-content-center ">
+         {% csrf_token %}
+
+             <input id="query" name="search" class="form-control form-control-lg w" style="width:400px;"type="text"
+                placeholder="Search" aria-label="Search" value="{{ request.GET.search }}">
+
+                 <button class="btn btn-outline-dark"  type="submit"><i class="fa fa-search"></i></button>
+
+     </form>
+
+ </div>
+    <div class="row">
+        {% for product in products %}
+            {#            <div class="col-lg-3 product-card">#}
+            {#                <img class="thumbnail product-img" src="{{ product.imageURL }}">#}
+            {#                <div class="box-element product">#}
+            {#                    <h6><strong>{{ product.name }}   </strong></h6>#}
+            {#                    <div class="product-author-publisher">#}
+            {#                        <h9><strong>By </strong> {{ product.author }}</h9>#}
+            {#                        <h9><strong>Publisher: </strong> {{ product.publisher |truncatechars:25 }}</h9>#}
+            {#                    </div>#}
+            {##}
+            {#                    <hr>#}
+            {#                    <p class="product-main-price">₺{{ product.price|floatformat:2 }} </p>#}
+            {#                    <div class="add-card-button">#}
+            {#                        <button data-product="{{ product.id }}" data-action="add"#}
+            {#                                class="btn btn-outline-secondary add-btn update-cart add-to-cart">Add to Cart#}
+            {#                        </button>#}
+            {#                        <a class="btn btn-outline-success view-product-detail"#}
+            {#                           href="{% url 'product_detail' product.id %}">View</a>#}
+            {##}
+            {#                    </div>#}
+            {#                </div>#}
+            {#            </div>#}
+            <div class="col-lg-3 product-card">
+                <div class="product-item">
+                    <a title="{{ product.name }}" href="{% url 'product_detail' product.id %}" class="product-image">
+
+                        <div class="image-area">
+                            <img class="thumbnail product-img" src="{{ product.imageURL }}">
+                        </div>
+                    </a>
+                    <div class="box-element product">
+                        <div class="detail-product">
+                            <div class="pname">
+                                <h6><strong>{{ product.name }}  </strong></h6>
+                            </div>
+                            <div class="product-author-publisher">
+                                <h9 class="product-author" style="font-weight: 400; font-style: italic">
+                                    {{ product.author }}</h9>
+                                <h9 class="publisher">{{ product.publisher |truncatechars:25 }}</h9>
+                            </div>
+
+                            <hr>
+
+                            <div class="add-card-button">
+                                <p class="product-main-price">₺{{ product.price|floatformat:2 }} </p>
+                                <button data-product="{{ product.id }}" data-action="add"
+                                        class="btn btn-outline-secondary add-btn update-cart add-to-cart">Add to Cart
+                                </button>
+                                <a class="btn btn-outline-success view-product-detail"
+                                   href="{% url 'product_detail' product.id %}">View</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+    </div>
+    <a href="#" class="scroll-go-top upper" style="bottom: 60px; display: block;"><i class="fa fa-arrow-up"></i></a>
+
+{% endblock content %}

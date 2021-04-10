@@ -1,0 +1,100 @@
+{% extends "store/main.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="clearfix">
+                        <div class="section-title">
+                            <h3 class="card-title">Order Detail</h3>
+                        </div>
+
+                        <table class="table">
+                            <tr>
+                                <th class="text-left">Name</th>
+                                <td class="text-left">{{ order.customer.name }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-left">Surname</th>
+                                <td class="text-left">{{ order.customer.surname }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-left">Email</th>
+                                <td class="text-left">{{ order.customer.email }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-left">Address</th>
+                                <td class="text-left">{{ shippingAddress.address }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-left">City</th>
+                                <td class="text-left">{{ shippingAddress.city }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-left">State</th>
+                                <td class="text-left">{{ shippingAddress.state }}</td>
+                            </tr>
+                        </table>
+
+                        <div class="section-title">
+                            <h3 class="card-title">Order Item List</h3>
+                        </div>
+                        {##}
+                        {#                        <table>#}
+                        {#                            <tr>#}
+                        {#                                <th class="text-left">Product Name</th>#}
+                        {#                                <th class="text-left">Price</th>#}
+                        {#                                <th class="text-left">Quantity</th>#}
+                        {#                                <th class="text-left">Amount</th>#}
+                        {#                                <th class="text-left">Date</th>#}
+                        {#                            </tr>#}
+                        {##}
+                        {#                            {% for rs in orderItems %}#}
+                        {#                                <tr>#}
+                        {#                                    <td class="text-left">#}
+                        {#                                        <a href="{% url 'product_detail' rs.product.id %}">#}
+                        {#                                            <img src="{{ rs.product.imageURL }}"></a>#}
+                        {#                                    </td>#}
+                        {#                                    <td class="text-left">{{ rs.product.name }}</td>#}
+                        {#                                    <td class="text-left">{{ rs.price }}</td>#}
+                        {#                                    <td class="text-left">{{ rs.quantity }}</td>#}
+                        {#                                    <td class="text-left">{{ rs.get_total }}</td>#}
+                        {#                                    <td class="text-left">{{ rs.date_added }}</td>#}
+                        {#                                </tr>#}
+                        {#                            {% endfor %}#}
+                        {#                        </table>#}
+                        <div class="box-element">
+                            <div class="cart-row">
+                                <div style="flex:2"></div>
+                                <div style="flex:2"><strong>Product Name</strong></div>
+                                <div style="flex:1"><strong>Price</strong></div>
+                                <div style="flex:1"><strong>Quantity</strong></div>
+                                <div style="flex:1"><strong>Total</strong></div>
+                                <div style="flex:1"><strong>Date</strong></div>
+                            </div>
+
+                            {% for rs in orderItems %}
+                                <div class="cart-row">
+                                    <div style="flex:2"><a href="{% url 'product_detail' rs.product.id %}">
+                                        <img class="row-image" src="{{ rs.product.imageURL }}">
+
+                                    </a></div>
+                                    <div style="flex:2"><p>{{ rs.product.name }}</p></div>
+                                    <div style="flex:1"><p>{{ rs.product.price }} TL</p></div>
+                                    <div style="flex:1">
+                                        <p class="quantity">{{ rs.quantity }}</p>
+                                    </div>
+                                    <div style="flex:1"><p>{{ rs.get_total }} TL</p></div>
+                                    <div style="flex:1"><p>{{ rs.date_added }}</p></div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

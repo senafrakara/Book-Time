@@ -1,0 +1,71 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+
+    <style>
+        .profile-pic {
+            max-width: 200px;
+            max-height: 200px;
+            margin: 0 auto;
+            border-radius: 50%;
+        }
+
+        .user-edit-profile, .back-to-store-profile {
+            margin-bottom: 2em;
+            margin-top: 5em;
+        }
+
+
+    </style>
+
+    <br>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card card-body">
+                <hr>
+                <h3 style="text-align: center">Account Settings</h3>
+                <hr>
+                <img class="profile-pic" src="{{ request.user.customer.profile_pic.url }}">
+
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card card-body">
+
+                <form method="POST" action="" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                    {{ form.as_p }}
+
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-success user-edit-profile" type="submit" name="button">SUBMIT
+                            </button>
+                            <a class="btn btn-light back-to-store-profile" href="{% url 'store' %}"> &#8592; Back to
+                                Store</a>
+                        </div>
+
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card card-body">
+                <hr>
+                <h3 style="text-align: center">User Panel</h3>
+                <hr>
+                <div class="user-panel">
+                    <a class="btn btn-primary dropdown-item waves-effect waves-light user-panel-button" href="{% url 'favorite_list' %}">My Favorite Books List</a>
+                    <a class="btn btn-primary dropdown-item waves-effect waves-light user-panel-button" href="{% url 'my_order_list' %}">My Orders List</a>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}

@@ -1,0 +1,194 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+    <style>
+        i.fa.fa-thumbs-down {
+            display: none;
+        }
+
+        i.fa.fa-thumbs-up {
+            display: none;
+        }
+
+        svg.bi.bi-heart-fill {
+            margin-left: 5px;
+            width: 17px;
+            height: 17px;
+        }
+    </style>
+
+    <!--Section: Block Content-->
+    <section class="mb-5">
+
+        <div class="row">
+            <div class="col-md-4 mb-4 mb-md-0">
+
+                <div id="mdb-lightbox-ui"></div>
+
+                <div class="mdb-lightbox">
+
+                    <div class="row product-gallery mx-1">
+
+                        <div class="col-12 mb-0">
+                            <figure class="view overlay rounded z-depth-1 main-img">
+                                <a href="{{ product.imageURL }}"
+                                   data-size="710x823">
+                                    <img src="{{ product.imageURL }}"
+                                         class="img-fluid z-depth-1 product-detail-img">
+                                </a>
+                            </figure>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="col-md-6">
+
+                <h4 style="font-weight: 500;">{{ product.name }}</h4>
+                <ul class="rating">
+                    <li>
+                        <i class="fas fa-star -o empty"></i>
+                    </li>
+                    <li>
+                        <i class="fas fa-star -o empty"></i>
+                    </li>
+                    <li>
+                        <i class="fas fa-star -o empty"></i>
+                    </li>
+                    <li>
+                        <i class="fas fa-star -o empty"></i>
+                    </li>
+                    <li>
+                        <i class="far fa-star -o empty"></i>
+                    </li>
+                </ul>
+
+
+
+                <p class="product-detail-price"><span
+                        class="mr-1"><strong>₺{{ product.price|floatformat:2 }}</strong></span></p>
+                <p class="pt-1"> {{ product.description }}</p>
+                <div class="table-responsive">
+                    <table class="table table-sm table-borderless mb-0">
+                        <tbody>
+                        <tr>
+                            <th class="pl-0 w-25" scope="row"><strong>Author</strong></th>
+                            <td>By {{ product.author }}</td>
+                        </tr>
+                        <tr>
+                            <th class="pl-0 w-25" scope="row"><strong>Publisher</strong></th>
+                            <td>{{ product.publisher }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <hr>
+                <div class="add-cart-favorite">
+                    <button data-product="{{ product.id }}" data-action="add"
+                            class="btn btn-light btn-md mr-1 mb-2 waves-effect waves-light update-cart add-to-cart-detail" style="color: black !important;">
+                        <i class="fas fa-shopping-cart pr-2"></i>Add to cart
+                    </button>
+                    <form action="{% url 'favorite_product' product.id %}" method="post">
+                        {% csrf_token %}
+                        {% if user.is_authenticated %}
+
+                            {% if favorite %}
+                                <!--If user is logged in and if it did favorite this product before-->
+                                <button type="submit" name="product_id" value="{{ product_id }}"
+                                        class="btn btn-danger btn-md">
+                                    Remove from Favorites<i onclick="FavoriteUp(this)" class="fa fa-thumbs-down"></i>
+                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-heart-fill"
+                                         fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                              d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                                    </svg>
+                                </button>
+                            {% else %}
+                                <!--If user is logged in and if it did not favorite this product before -->
+                                <button type="submit" name="product_id" value="{{ product.id }}"
+                                        class="btn btn-primary btn-md">
+                                    Add to Favorites<i onclick="FavoriteDown(this)" class="fa fa-thumbs-up"></i>
+                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-heart-fill"
+                                         fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                              d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                                    </svg>
+                                </button>
+                            {% endif %}
+
+                        {% else %}
+                            <!-- If user is not logged in then it does not see any favorite button -->
+                        {% endif %}
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--- Comment Section -->
+    <section class="mb-5">
+        <hr>
+
+        <div class="col-md-12 card-body">
+            {% if user.is_authenticated %}
+                {% if new_comment %}
+                    <div class="alert alert-success" role="alert">
+                        Your comment is awaiting moderation
+                    </div>
+                {% else %}
+                    <h3>Leave a comment</h3>
+                    <form method="post" style="margin-top: 1.3em;">
+                        {{ comment_form.as_p }}
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Comment</button>
+                    </form>
+                {% endif %}
+
+            {% else %}
+                <h3>You have to log in if you want to comment!!</h3>
+            {% endif %}
+            <h2>{{ comments.count }} comments</h2>
+            {% for comment in comments %}
+                <div class="comments" style="padding: 10px;">
+                    <p class="font-weight-bold">
+                        {{ comment.commenter }}
+                        <span class=" text-muted font-weight-normal">
+                  {{ comment.created_on }}
+                </span>
+
+                    </p>
+                    {{ comment.comment_content | linebreaks }}
+                    {% if request.user == comment.commenter %}
+                        <form method="post" action="{% url 'delete-comment' comment.id %}">
+                            {% csrf_token %}
+                            <button class="btn btn-danger" type="submit">Delete</button>
+                        </form>
+                    {% endif %}
+                    <hr/>
+
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    <script>
+        $(document).ready(function () {
+            // MDB Lightbox Init
+            $(function () {
+                $("#mdb-lightbox-ui").load("mdb-addons/mdb-lightbox-ui.html");
+            });
+        });
+
+        function FavoriteDown(x) {
+            x.classList.toggle("fa-thumbs-down");
+        }
+
+        function FavoriteUp(x) {
+            x.classList.toggle("fa-thumbs-up");
+        }
+
+    </script>
+
+    <!--Section: Block Content-->
+{% endblock content %}
