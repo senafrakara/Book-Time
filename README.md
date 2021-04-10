@@ -11,10 +11,10 @@ Setup project environment with [virtualenv](https://virtualenv.pypa.io) and [pip
 ```bash
 $ virtualenv project-env
 $ source project-env/bin/activate
-$ pip install -r https://raw.githubusercontent.com/juanifioren/django-project-template/master/requirements.txt
+$ pip install -r https://raw.githubusercontent.com/senafrakara/Book-Time/main/requirements.txt
 
 # You may want to change the name `projectname`.
-$ django-admin startproject --template https://github.com/juanifioren/django-project-template/archive/master.zip projectname
+$ django-admin startproject --template https://github.com/senafrakara/Book-Time/archive/Book-Time-main.zip projectname
 
 $ cd projectname/
 $ cp settings_custom.py.edit settings_custom.py
